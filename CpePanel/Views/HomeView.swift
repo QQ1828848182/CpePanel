@@ -318,9 +318,10 @@ struct HomeView: View {
     }
 
     private func kpi(_ label: String, _ v: String, _ unit: String,
-                     _ min: Double, _ max: Double) -> some View {
+                     _ lo: Double, _ hi: Double) -> some View {
         let val = Double(v) ?? 0
-        let p = min(1, max(0, (val - min) / (max - min)))
+        let span = hi - lo
+        let p = Swift.min(1, Swift.max(0, span == 0 ? 0 : (val - lo) / span))
         return VStack(spacing: 3) {
             Text(label).font(.system(size: 10.5)).foregroundStyle(.secondary)
             HStack(alignment: .firstTextBaseline, spacing: 1) {
@@ -330,7 +331,7 @@ struct HomeView: View {
             GeometryReader { g in
                 ZStack(alignment: .leading) {
                     Capsule().fill(Color.secondary.opacity(0.15))
-                    Capsule().fill(.teal).frame(width: max(2, g.size.width * p))
+                    Capsule().fill(.teal).frame(width: Swift.max(2, g.size.width * p))
                 }
             }
             .frame(height: 4)

@@ -29,7 +29,7 @@ struct RootView: View {
         .onAppear {
             Task { await store.tryAutoLogin() }
         }
-        .onChange(of: store.isLoggedIn) { _, ok in
+        .onChange(of: store.isLoggedIn) { ok in
             if ok { store.startPolling() } else { store.stopPolling() }
         }
     }
