@@ -79,6 +79,7 @@ final class CpeAPI {
     private static func cbcEncrypt(data: Data, key: Data, iv: Data) throws -> Data {
         var outLength = 0
         var out = Data(count: data.count + kCCBlockSizeAES128)
+        let capacity = out.count
         let status = out.withUnsafeMutableBytes { outPtr in
             data.withUnsafeBytes { dataPtr in
                 key.withUnsafeBytes { keyPtr in
@@ -89,7 +90,7 @@ final class CpeAPI {
                                 keyPtr.baseAddress, key.count,
                                 ivPtr.baseAddress,
                                 dataPtr.baseAddress, data.count,
-                                outPtr.baseAddress, out.count,
+                                outPtr.baseAddress, capacity,
                                 &outLength)
                     }
                 }
@@ -102,6 +103,7 @@ final class CpeAPI {
     private static func cbcDecrypt(data: Data, key: Data, iv: Data) throws -> Data {
         var outLength = 0
         var out = Data(count: data.count + kCCBlockSizeAES128)
+        let capacity = out.count
         let status = out.withUnsafeMutableBytes { outPtr in
             data.withUnsafeBytes { dataPtr in
                 key.withUnsafeBytes { keyPtr in
@@ -112,7 +114,7 @@ final class CpeAPI {
                                 keyPtr.baseAddress, key.count,
                                 ivPtr.baseAddress,
                                 dataPtr.baseAddress, data.count,
-                                outPtr.baseAddress, out.count,
+                                outPtr.baseAddress, capacity,
                                 &outLength)
                     }
                 }
